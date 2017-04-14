@@ -1,0 +1,20 @@
+prefix: '&7[&6&lPetsPlus&7]'
+messages:
+  only-player: '&4This command can only be used by players!'
+  gui-opened: '&6The pets gui has been opened!'
+  already-have-this-pet: '&4You already have a %pet-name% pet active!'
+  already-have-pet: '&4You already have a pet active!'
+  spawned-pet: '&6Spawned your %pet-name% pet!'
+  dont-have-pet: '&4You dont have a pet active!'
+  removed-pet: '&4Despawned your %pet-name% pet!'
+  no-permission: '&4You dont have permission to spawn this pet!'
+gui:
+  title-main: '&6Pets'
+  title-options: '&6Pets &7| Options'
+  title-rename: '&6Pets &7| Rename'
+  remove-pet-item: '&4Remove pet'
+  pet-options-item: '&6Pet options'
+  make-sound-item: '&6Make sound'
+options:
+  silent: true
+  nametag: true

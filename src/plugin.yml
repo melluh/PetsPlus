@@ -1,0 +1,10 @@
+name: PetsPlus
+main: nl.mistermel.petsplus.Main
+author: MisterMel
+version: 1.0
+description: 
+commands:
+  pets:
+    description: The main command for PetsPlus.
+    usage: /pets OR /petsplus
+    aliases: [petsplus]
