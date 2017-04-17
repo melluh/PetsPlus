@@ -5,11 +5,13 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.UUID;
 
+import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import nl.mistermel.petsplus.gui.PetSelection;
 
@@ -17,15 +19,25 @@ public class Main extends JavaPlugin {
 	
 	private static ConfigManager configManager;
 	
-	public static HashMap<UUID, Pet> pets = new HashMap<UUID, Pet>();
+	private static PetManager petManager;
+	
+	private static HashMap<UUID, Pet> pets = new HashMap<UUID, Pet>();
 	
 	public void onEnable() {
 		configManager = new ConfigManager(this);
+		petManager = new PetManager();
 		getServer().getPluginManager().registerEvents(new Events(this), this);
 		if(!new File(getDataFolder(), "config.yml").exists()) {
 			saveDefaultConfig();
 		}
-		new PetTick(this).runTaskTimer(this, 0L, 1L);
+		registerPets();
+		new BukkitRunnable() {
+			public void run() {
+				for(Pet p: getPets()) {
+					p.tick();
+				}
+			}
+		}.runTaskTimer(this, 0L, 1L);
 	}
 	
 	public void onDisable() {
@@ -44,6 +56,15 @@ public class Main extends JavaPlugin {
 		p.sendMessage(configManager.getPrefix() + configManager.getMessage("gui-opened"));
 		PetSelection.open(p);
 		return true;
+	}
+	
+	private void registerPets() {
+		petManager.registerPet(new PetBase(EntityType.CHICKEN, Sound.ENTITY_CHICKEN_AMBIENT, "Chicken", "MHF_Chicken", "petsplus.pet.chicken"));
+		petManager.registerPet(new PetBase(EntityType.COW, Sound.ENTITY_COW_AMBIENT, "Cow", "MHF_Cow", "petsplus.pet.cow"));
+		petManager.registerPet(new PetBase(EntityType.SHEEP, Sound.ENTITY_SHEEP_AMBIENT, "Sheep", "MHF_Sheep", "petsplus.pet.sheep"));
+		petManager.registerPet(new PetBase(EntityType.RABBIT, Sound.ENTITY_RABBIT_AMBIENT, "Rabbit", "MHF_Rabbit", "petsplus.pet.rabbit"));
+		petManager.registerPet(new PetBase(EntityType.OCELOT, Sound.ENTITY_CAT_PURREOW, "Ocelot", "MHF_Ocelot", "petsplus.pet.ocelot"));
+		petManager.registerPet(new PetBase(EntityType.PIG, Sound.ENTITY_PIG_AMBIENT, "Pig", "MHF_Pig", "petsplus.pet.pig"));
 	}
 	
 	public Collection<Pet> getPets() {
@@ -76,5 +97,9 @@ public class Main extends JavaPlugin {
 	
 	public static ConfigManager getConfigManager() {
 		return configManager;
+	}
+	
+	public static PetManager getPetManager() {
+		return petManager;
 	}
 }

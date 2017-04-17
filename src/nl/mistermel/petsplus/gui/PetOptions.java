@@ -32,7 +32,7 @@ public class PetOptions {
 		if(item.getType() == Material.JUKEBOX) {
 			p.closeInventory();
 			for(Player p2 : Bukkit.getOnlinePlayers()) {
-				p2.playSound(Main.pets.get(p.getUniqueId()).getEntity().getLocation(), Main.pets.get(p.getUniqueId()).getSound(), SoundCategory.AMBIENT, 1f, 1f);
+				p2.playSound(Main.getPet(p).getEntity().getLocation(), Main.getPet(p).getSound(), SoundCategory.AMBIENT, 1f, 1f);
 			}
 		}	
 	}
