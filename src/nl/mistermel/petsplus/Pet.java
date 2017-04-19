@@ -11,13 +11,14 @@ import org.bukkit.entity.Player;
 import net.md_5.bungee.api.ChatColor;
 import net.minecraft.server.v1_11_R1.EntityInsentient;
 
+
+@SuppressWarnings("deprecation")
 public class Pet {
 	
 	private Player owner;
 	private LivingEntity e;
 	private Sound s;
 	
-	@SuppressWarnings("deprecation")
 	public Pet(Player owner, EntityType type, Sound sound) {
 		this.owner = owner;
 		this.s = sound;
@@ -29,7 +30,6 @@ public class Pet {
 		}
 	}
 	
-	@SuppressWarnings("deprecation")
 	public void tick() {
 		if(this.e == null || this.owner == null || this.e.isDead()) {
 			return;

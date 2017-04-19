@@ -1,6 +1,8 @@
-package nl.mistermel.petsplus;
+package nl.mistermel.petsplus.utils;
 
 import org.bukkit.ChatColor;
+
+import nl.mistermel.petsplus.Main;
 
 public class ConfigManager {
 	
