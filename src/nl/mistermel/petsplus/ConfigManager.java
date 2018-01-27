@@ -1,14 +1,12 @@
-package nl.mistermel.petsplus.utils;
+package nl.mistermel.petsplus;
 
 import org.bukkit.ChatColor;
 
-import nl.mistermel.petsplus.Main;
-
 public class ConfigManager {
 	
-	static Main plugin;
+	static PetsPlus plugin;
 	
-	public ConfigManager(Main instance) {
+	public ConfigManager(PetsPlus instance) {
 		plugin = instance;
 	}
 	

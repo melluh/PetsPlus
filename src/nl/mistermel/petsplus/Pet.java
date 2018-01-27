@@ -2,14 +2,14 @@ package nl.mistermel.petsplus;
 
 import org.bukkit.Location;
 import org.bukkit.Sound;
-import org.bukkit.craftbukkit.v1_11_R1.entity.CraftLivingEntity;
+import org.bukkit.craftbukkit.v1_12_R1.entity.CraftLivingEntity;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 import net.md_5.bungee.api.ChatColor;
-import net.minecraft.server.v1_11_R1.EntityInsentient;
+import net.minecraft.server.v1_12_R1.EntityInsentient;
 
 
 @SuppressWarnings("deprecation")
@@ -23,8 +23,8 @@ public class Pet {
 		this.owner = owner;
 		this.s = sound;
 		this.e = (LivingEntity) owner.getWorld().spawnEntity(owner.getLocation(), type);
-		e.setSilent(Main.getConfigManager().getSetting("silent"));
-		if(Main.getConfigManager().getSetting("nametag")) {
+		e.setSilent(PetsPlus.getInstance().getConfigManager().getSetting("silent"));
+		if(PetsPlus.getInstance().getConfigManager().getSetting("nametag")) {
 			e.setCustomName(ChatColor.GOLD + owner.getName() + "'s " + type.getName().toLowerCase());
 			e.setCustomNameVisible(true);
 		}

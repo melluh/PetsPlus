@@ -15,6 +15,7 @@ gui:
   remove-pet-item: '&4Remove pet'
   pet-options-item: '&6Pet options'
   make-sound-item: '&6Make sound'
+  ride-item: '&6Ride pet'
 options:
   silent: true
   nametag: true

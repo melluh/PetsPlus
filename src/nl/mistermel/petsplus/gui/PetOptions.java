@@ -4,37 +4,46 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.SoundCategory;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import nl.mistermel.petsplus.Main;
+import nl.mistermel.petsplus.PetsPlus;
 
-public class PetOptions {
+public class PetOptions extends Gui {
 	
-	private static Inventory gui;
-	
-	public static void open(Player p) {
-		if(gui == null) {
-			gui = Bukkit.createInventory(null, InventoryType.HOPPER, Main.getConfigManager().getGuiSetting("title-options"));
-			ItemStack sound = new ItemStack(Material.JUKEBOX);
-			ItemMeta soundMeta = sound.getItemMeta();
-			soundMeta.setDisplayName(Main.getConfigManager().getGuiSetting("make-sound-item"));
-			sound.setItemMeta(soundMeta);
-			gui.setItem(2, sound);
-		}
-		p.openInventory(gui);
+	public PetOptions() {
+		super(PetsPlus.getInstance().getConfigManager().getGuiSetting("title-options"));
 	}
-	
-	public static void click(Player p, ItemStack item) {
-		if(item == null) return;
+
+	@Override
+	public void populateInventory(Player p, Inventory inv) {
+		ItemStack sound = new ItemStack(Material.JUKEBOX);
+		ItemMeta soundMeta = sound.getItemMeta();
+		soundMeta.setDisplayName(PetsPlus.getInstance().getConfigManager().getGuiSetting("make-sound-item"));
+		sound.setItemMeta(soundMeta);
+		
+		ItemStack ride = new ItemStack(Material.SADDLE);
+		ItemMeta rideMeta = ride.getItemMeta();
+		rideMeta.setDisplayName(PetsPlus.getInstance().getConfigManager().getGuiSetting("ride-item"));
+		ride.setItemMeta(rideMeta);
+		
+		inv.setItem(11, sound);
+		inv.setItem(13, ride);
+	}
+
+	@Override
+	public void onClick(Player p, ItemStack item) {
 		if(item.getType() == Material.JUKEBOX) {
 			p.closeInventory();
 			for(Player p2 : Bukkit.getOnlinePlayers()) {
-				p2.playSound(Main.getPet(p).getEntity().getLocation(), Main.getPet(p).getSound(), SoundCategory.AMBIENT, 1f, 1f);
+				p2.playSound(PetsPlus.getInstance().getPet(p).getEntity().getLocation(), PetsPlus.getInstance().getPet(p).getSound(), SoundCategory.AMBIENT, 1f, 1f);
 			}
-		}	
+		}
+		if(item.getType() == Material.SADDLE) {
+			p.closeInventory();
+			PetsPlus.getInstance().getPet(p).getEntity().addPassenger(p);
+		}
 	}
 	
 }

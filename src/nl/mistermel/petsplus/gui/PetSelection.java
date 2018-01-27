@@ -13,98 +13,82 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
 import net.md_5.bungee.api.ChatColor;
-import nl.mistermel.petsplus.Main;
+import nl.mistermel.petsplus.PetsPlus;
 import nl.mistermel.petsplus.Pet;
 import nl.mistermel.petsplus.PetBase;
 
-public class PetSelection {
+public class PetSelection extends Gui {
 	
-	private static HashMap<UUID, Inventory> menus = new HashMap<UUID, Inventory>();
-	
-	public static void open(Player p) {
-		if(menus.containsKey(p.getUniqueId())) {
-			if(menus.get(p.getUniqueId()).getTitle() != Main.getConfigManager().getGuiSetting("title-main")) {
-				Inventory inv = Bukkit.createInventory(null, InventoryType.CHEST, Main.getConfigManager().getGuiSetting("title-main"));
-				menus.put(p.getUniqueId(), inv);
-			}
-			update(p);
-			p.openInventory(menus.get(p.getUniqueId()));
-		} else {
-			Inventory inv = Bukkit.createInventory(null, InventoryType.CHEST, Main.getConfigManager().getGuiSetting("title-main"));
-			menus.put(p.getUniqueId(), inv);
-			update(p);
-			p.openInventory(inv);
-		}
+	public PetSelection() {
+		super(PetsPlus.getInstance().getConfigManager().getGuiSetting("title-main"));
 	}
-	
-	public static void update(Player p) {
-		Inventory inv = menus.get(p.getUniqueId());
-		inv.clear();
-		for(PetBase pet : Main.getPetManager().getPets()) {
-			inv.addItem(createItem(pet.getName(), pet.getSkullOwner(), p.hasPermission(pet.getPermission())));
+
+	@Override
+	public void populateInventory(Player p, Inventory inv) {
+		for(PetBase pet : PetsPlus.getInstance().getPetManager().getPets()) {
+			inv.addItem(createSkull(pet.getName(), pet.getSkullOwner(), p.hasPermission(pet.getPermission())));
 		}
 		ItemStack remove = new ItemStack(Material.BARRIER);
 		ItemMeta removeMeta = remove.getItemMeta();
-		removeMeta.setDisplayName(Main.getConfigManager().getGuiSetting("remove-pet-item"));
+		removeMeta.setDisplayName(PetsPlus.getInstance().getConfigManager().getGuiSetting("remove-pet-item"));
 		remove.setItemMeta(removeMeta);
-		inv.setItem(21, remove);
+		inv.setItem(22, remove);
 		ItemStack options = new ItemStack(Material.REDSTONE_COMPARATOR);
 		ItemMeta optionsMeta = options.getItemMeta();
-		optionsMeta.setDisplayName(Main.getConfigManager().getGuiSetting("pet-options-item"));
+		optionsMeta.setDisplayName(PetsPlus.getInstance().getConfigManager().getGuiSetting("pet-options-item"));
 		options.setItemMeta(optionsMeta);
-		inv.setItem(23, options);
-		menus.put(p.getUniqueId(), inv);
+		inv.setItem(24, options);
 	}
-	
-	@SuppressWarnings("deprecation")
-	public static void click(Player p, ItemStack item) {
-		if(item == null) return;
+
+	@Override
+	public void onClick(Player p, ItemStack item) {
 		if(item.getType() == Material.BARRIER) {
-			if(!Main.hasPet(p)) {
-				p.sendMessage(Main.getConfigManager().getPrefix() + Main.getConfigManager().getMessage("dont-have-pet"));
+			if(!PetsPlus.getInstance().hasPet(p)) {
+				p.sendMessage(PetsPlus.getInstance().getConfigManager().getPrefix() + PetsPlus.getInstance().getConfigManager().getMessage("dont-have-pet"));
 				p.closeInventory();
 				return;
 			}
-			p.sendMessage(Main.getConfigManager().getPrefix() + Main.getConfigManager().getMessage("removed-pet").replaceAll("%pet-name%", Main.getPet(p).getEntity().getType().getName().toLowerCase()));
+			p.sendMessage(PetsPlus.getInstance().getConfigManager().getPrefix() + PetsPlus.getInstance().getConfigManager().getMessage("removed-pet").replaceAll("%pet-name%", PetsPlus.getInstance().getPet(p).getEntity().getType().getName()));
 			p.closeInventory();
-			Main.removePet(p);
+			PetsPlus.getInstance().removePet(p);
 		}
 		if(item.getType() == Material.REDSTONE_COMPARATOR) {
-			if(!Main.hasPet(p)) {
-				p.sendMessage(Main.getConfigManager().getPrefix() + Main.getConfigManager().getMessage("dont-have-pet"));
+			if(!PetsPlus.getInstance().hasPet(p)) {
+				p.sendMessage(PetsPlus.getInstance().getConfigManager().getPrefix() + PetsPlus.getInstance().getConfigManager().getMessage("dont-have-pet"));
 				p.closeInventory();
 				return;
 			}
 			p.closeInventory();
-			PetOptions.open(p);
+			PetsPlus.getInstance().getGuiManager().getGui(PetOptions.class).open(p);
 		}
 		if(item.hasItemMeta() && item.getItemMeta().hasDisplayName() && item.getType() == Material.SKULL_ITEM) {
 			String name = ChatColor.stripColor(item.getItemMeta().getDisplayName());
-			for(PetBase pet : Main.getPetManager().getPets()) {
+			for(PetBase pet : PetsPlus.getInstance().getPetManager().getPets()) {
 				if(pet.getName().equals(name)) {
-					if(Main.hasPetActive(p, pet.getType())) {
-						p.sendMessage(Main.getConfigManager().getPrefix() + Main.getConfigManager().getMessage("already-have-this-pet").replaceAll("%pet-name%", pet.getType().getName().toLowerCase()));
+					if(PetsPlus.getInstance().hasPetActive(p, pet.getType())) {
+						p.sendMessage(PetsPlus.getInstance().getConfigManager().getPrefix() + PetsPlus.getInstance().getConfigManager().getMessage("already-have-this-pet").replaceAll("%pet-name%", pet.getType().getName().toLowerCase()));
 						p.closeInventory();
 						return;
 					}
-					if(Main.hasPet(p)) {
-						p.sendMessage(Main.getConfigManager().getPrefix() + Main.getConfigManager().getMessage("already-have-pet"));
+					if(PetsPlus.getInstance().hasPet(p)) {
+						p.sendMessage(PetsPlus.getInstance().getConfigManager().getPrefix() + PetsPlus.getInstance().getConfigManager().getMessage("already-have-pet"));
 						p.closeInventory();
 						return;
 					}
 					if(!p.hasPermission(pet.getPermission())) {
-						p.sendMessage(Main.getConfigManager().getPrefix() + Main.getConfigManager().getMessage("no-permission"));
+						p.sendMessage(PetsPlus.getInstance().getConfigManager().getPrefix() + PetsPlus.getInstance().getConfigManager().getMessage("no-permission"));
 						p.closeInventory();
 						return;
 					}
-					Main.registerPet(p, new Pet(p, pet.getType(), pet.getSound()));
-					p.sendMessage(Main.getConfigManager().getPrefix() + Main.getConfigManager().getMessage("spawned-pet").replaceAll("%pet-name%", pet.getType().getName().toLowerCase()));
+					PetsPlus.getInstance().registerPet(p, new Pet(p, pet.getType(), pet.getSound()));
+					p.sendMessage(PetsPlus.getInstance().getConfigManager().getPrefix() + PetsPlus.getInstance().getConfigManager().getMessage("spawned-pet").replaceAll("%pet-name%", pet.getType().getName().toLowerCase()));
 					p.closeInventory();
 				}
 			}
 		}
-	}	
-	private static ItemStack createItem(String displayName, String ownerName, boolean available) {
+	}
+	
+	private static ItemStack createSkull(String displayName, String ownerName, boolean available) {
 		ItemStack item = new ItemStack(Material.SKULL_ITEM, 1, (byte) 3);
 		SkullMeta meta = (SkullMeta) item.getItemMeta();
 		meta.setOwner(ownerName);
