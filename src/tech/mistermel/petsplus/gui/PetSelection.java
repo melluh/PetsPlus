@@ -1,4 +1,4 @@
-package nl.mistermel.petsplus.gui;
+package tech.mistermel.petsplus.gui;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -7,9 +7,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 
 import net.md_5.bungee.api.ChatColor;
-import nl.mistermel.petsplus.PetsPlus;
-import nl.mistermel.petsplus.pet.Pet;
-import nl.mistermel.petsplus.pet.PetBase;
+import tech.mistermel.petsplus.PetsPlus;
+import tech.mistermel.petsplus.pet.Pet;
+import tech.mistermel.petsplus.pet.PetBase;
 
 public class PetSelection extends Gui {
 	

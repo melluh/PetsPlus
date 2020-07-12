@@ -1,5 +1,5 @@
 name: PetsPlus
-main: nl.mistermel.petsplus.PetsPlus
+main: tech.mistermel.petsplus.PetsPlus
 author: MisterMel
 version: 1.2.0
 description: Interactive pets for your players

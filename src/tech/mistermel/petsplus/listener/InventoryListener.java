@@ -1,12 +1,12 @@
-package nl.mistermel.petsplus.listener;
+package tech.mistermel.petsplus.listener;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
-import nl.mistermel.petsplus.PetsPlus;
-import nl.mistermel.petsplus.gui.Gui;
+import tech.mistermel.petsplus.PetsPlus;
+import tech.mistermel.petsplus.gui.Gui;
 
 public class InventoryListener implements Listener {
 

@@ -1,4 +1,4 @@
-package nl.mistermel.petsplus.util;
+package tech.mistermel.petsplus.util;
 
 import java.util.ArrayList;
 import java.util.List;

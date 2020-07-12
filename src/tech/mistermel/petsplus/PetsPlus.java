@@ -1,4 +1,4 @@
-package nl.mistermel.petsplus;
+package tech.mistermel.petsplus;
 
 import java.io.File;
 
@@ -11,13 +11,13 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import nl.mistermel.petsplus.gui.GuiManager;
-import nl.mistermel.petsplus.gui.PetOptions;
-import nl.mistermel.petsplus.gui.PetSelection;
-import nl.mistermel.petsplus.listener.EntityListener;
-import nl.mistermel.petsplus.listener.InventoryListener;
-import nl.mistermel.petsplus.pet.PetBase;
-import nl.mistermel.petsplus.pet.PetManager;
+import tech.mistermel.petsplus.gui.GuiManager;
+import tech.mistermel.petsplus.gui.PetOptions;
+import tech.mistermel.petsplus.gui.PetSelection;
+import tech.mistermel.petsplus.listener.EntityListener;
+import tech.mistermel.petsplus.listener.InventoryListener;
+import tech.mistermel.petsplus.pet.PetBase;
+import tech.mistermel.petsplus.pet.PetManager;
 
 public class PetsPlus extends JavaPlugin {
 	

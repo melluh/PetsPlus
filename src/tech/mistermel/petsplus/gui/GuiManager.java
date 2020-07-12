@@ -1,4 +1,4 @@
-package nl.mistermel.petsplus.gui;
+package tech.mistermel.petsplus.gui;
 
 import java.util.Collection;
 import java.util.HashMap;

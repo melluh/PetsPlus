@@ -1,4 +1,4 @@
-package nl.mistermel.petsplus;
+package tech.mistermel.petsplus;
 
 import org.bukkit.ChatColor;
 

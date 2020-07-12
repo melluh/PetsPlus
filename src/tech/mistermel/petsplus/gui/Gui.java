@@ -1,4 +1,4 @@
-package nl.mistermel.petsplus.gui;
+package tech.mistermel.petsplus.gui;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;

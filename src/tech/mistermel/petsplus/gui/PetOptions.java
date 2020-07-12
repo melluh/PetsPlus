@@ -1,4 +1,4 @@
-package nl.mistermel.petsplus.gui;
+package tech.mistermel.petsplus.gui;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -9,9 +9,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import nl.mistermel.petsplus.PetsPlus;
-import nl.mistermel.petsplus.pet.Pet;
-import nl.mistermel.petsplus.util.ItemBuilder;
+import tech.mistermel.petsplus.PetsPlus;
+import tech.mistermel.petsplus.pet.Pet;
+import tech.mistermel.petsplus.util.ItemBuilder;
 
 public class PetOptions extends Gui {
 	

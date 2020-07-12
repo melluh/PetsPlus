@@ -1,4 +1,4 @@
-package nl.mistermel.petsplus.pet;
+package tech.mistermel.petsplus.pet;
 
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 
 import net.md_5.bungee.api.ChatColor;
 import net.minecraft.server.v1_16_R1.EntityInsentient;
-import nl.mistermel.petsplus.PetsPlus;
+import tech.mistermel.petsplus.PetsPlus;
 
 
 @SuppressWarnings("deprecation")
