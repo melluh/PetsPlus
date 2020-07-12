@@ -1,10 +1,10 @@
 name: PetsPlus
-main: nl.mistermel.petsplus.PetsPlus
+main: tech.mistermel.petsplus.PetsPlus
 author: MisterMel
-version: 1.1
-description: 
+version: 1.2.0
+description: Interactive pets for your players
+api-version: 1.13
 commands:
   pets:
     description: The main command for PetsPlus.
-    usage: /pets OR /petsplus
     aliases: [petsplus]
