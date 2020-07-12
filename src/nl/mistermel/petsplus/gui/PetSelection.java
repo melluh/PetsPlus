@@ -23,16 +23,17 @@ public class PetSelection extends Gui {
 		for(PetBase pet : PetsPlus.getInstance().getPetManager().getPets()) {
 			inv.addItem(createSkull(pet.getName(), pet.getSkullOwner(), p.hasPermission(pet.getPermission())));
 		}
-		ItemStack remove = new ItemStack(Material.BARRIER);
-		ItemMeta removeMeta = remove.getItemMeta();
-		removeMeta.setDisplayName(PetsPlus.getInstance().getConfigManager().getGuiSetting("remove-pet-item"));
-		remove.setItemMeta(removeMeta);
-		inv.setItem(22, remove);
+		
 		ItemStack options = new ItemStack(Material.BEACON);
 		ItemMeta optionsMeta = options.getItemMeta();
 		optionsMeta.setDisplayName(PetsPlus.getInstance().getConfigManager().getGuiSetting("pet-options-item"));
 		options.setItemMeta(optionsMeta);
-		inv.setItem(24, options);
+		inv.setItem(21, options);
+		ItemStack remove = new ItemStack(Material.BARRIER);
+		ItemMeta removeMeta = remove.getItemMeta();
+		removeMeta.setDisplayName(PetsPlus.getInstance().getConfigManager().getGuiSetting("remove-pet-item"));
+		remove.setItemMeta(removeMeta);
+		inv.setItem(23, remove);
 	}
 
 	@Override
