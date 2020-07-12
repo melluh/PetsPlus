@@ -6,9 +6,9 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import nl.mistermel.petsplus.Pet;
 import nl.mistermel.petsplus.PetsPlus;
 import nl.mistermel.petsplus.gui.PetOptions;
+import nl.mistermel.petsplus.pet.Pet;
 
 public class EntityListener implements Listener {
 	@EventHandler

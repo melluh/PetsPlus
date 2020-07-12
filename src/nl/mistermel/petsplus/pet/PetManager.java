@@ -1,4 +1,4 @@
-package nl.mistermel.petsplus;
+package nl.mistermel.petsplus.pet;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,6 +38,7 @@ public class PetManager {
 	public void removePet(Pet pet) {
 		pets.remove(pet.getOwner().getUniqueId());
 		petEntities.remove(pet.getEntity());
+		pet.remove();
 	}
 	
 	public void removeAll() {

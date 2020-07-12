@@ -7,9 +7,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 
 import net.md_5.bungee.api.ChatColor;
-import nl.mistermel.petsplus.Pet;
-import nl.mistermel.petsplus.PetBase;
 import nl.mistermel.petsplus.PetsPlus;
+import nl.mistermel.petsplus.pet.Pet;
+import nl.mistermel.petsplus.pet.PetBase;
 
 public class PetSelection extends Gui {
 	

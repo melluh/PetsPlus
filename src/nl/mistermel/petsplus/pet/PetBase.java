@@ -1,4 +1,4 @@
-package nl.mistermel.petsplus;
+package nl.mistermel.petsplus.pet;
 
 import org.bukkit.Sound;
 import org.bukkit.entity.EntityType;

@@ -16,6 +16,8 @@ import nl.mistermel.petsplus.gui.PetOptions;
 import nl.mistermel.petsplus.gui.PetSelection;
 import nl.mistermel.petsplus.listener.EntityListener;
 import nl.mistermel.petsplus.listener.InventoryListener;
+import nl.mistermel.petsplus.pet.PetBase;
+import nl.mistermel.petsplus.pet.PetManager;
 
 public class PetsPlus extends JavaPlugin {
 	
@@ -32,7 +34,7 @@ public class PetsPlus extends JavaPlugin {
 			saveDefaultConfig();
 		}
 		
-		this.configManager = new ConfigManager(this);
+		this.configManager = new ConfigManager();
 		this.petManager = new PetManager();
 		this.guiManager = new GuiManager();
 		
@@ -74,7 +76,7 @@ public class PetsPlus extends JavaPlugin {
 		Player p = (Player) sender;
 		
 		guiManager.getGui(petManager.getPet(p.getUniqueId()) != null ? PetOptions.class : PetSelection.class).open(p);
-		p.sendMessage(configManager.getPrefix() + configManager.getMessage("gui-opened"));
+		p.sendMessage(message("gui-opened"));
 		return true;
 	}
 	
