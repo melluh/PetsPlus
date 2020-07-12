@@ -24,7 +24,7 @@ public class GuiManager implements Listener {
 	public void onInventoryClick(InventoryClickEvent e) {
 		if(e.getCurrentItem() == null) return;
 		for(Gui gui : guis.values()) {
-			if(gui.getTitle().equals(e.getInventory().getTitle())) {
+			if(gui.getTitle().equals(e.getView().getTitle())) {
 				gui.onClick((Player) e.getWhoClicked(), e.getCurrentItem());
 				return;
 			}

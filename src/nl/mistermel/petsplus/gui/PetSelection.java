@@ -1,21 +1,16 @@
 package nl.mistermel.petsplus.gui;
 
-import java.util.HashMap;
-import java.util.UUID;
-
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
 import net.md_5.bungee.api.ChatColor;
-import nl.mistermel.petsplus.PetsPlus;
 import nl.mistermel.petsplus.Pet;
 import nl.mistermel.petsplus.PetBase;
+import nl.mistermel.petsplus.PetsPlus;
 
 public class PetSelection extends Gui {
 	
@@ -33,7 +28,7 @@ public class PetSelection extends Gui {
 		removeMeta.setDisplayName(PetsPlus.getInstance().getConfigManager().getGuiSetting("remove-pet-item"));
 		remove.setItemMeta(removeMeta);
 		inv.setItem(22, remove);
-		ItemStack options = new ItemStack(Material.REDSTONE_COMPARATOR);
+		ItemStack options = new ItemStack(Material.BEACON);
 		ItemMeta optionsMeta = options.getItemMeta();
 		optionsMeta.setDisplayName(PetsPlus.getInstance().getConfigManager().getGuiSetting("pet-options-item"));
 		options.setItemMeta(optionsMeta);
@@ -52,7 +47,7 @@ public class PetSelection extends Gui {
 			p.closeInventory();
 			PetsPlus.getInstance().removePet(p);
 		}
-		if(item.getType() == Material.REDSTONE_COMPARATOR) {
+		if(item.getType() == Material.BEACON) {
 			if(!PetsPlus.getInstance().hasPet(p)) {
 				p.sendMessage(PetsPlus.getInstance().getConfigManager().getPrefix() + PetsPlus.getInstance().getConfigManager().getMessage("dont-have-pet"));
 				p.closeInventory();
@@ -61,7 +56,7 @@ public class PetSelection extends Gui {
 			p.closeInventory();
 			PetsPlus.getInstance().getGuiManager().getGui(PetOptions.class).open(p);
 		}
-		if(item.hasItemMeta() && item.getItemMeta().hasDisplayName() && item.getType() == Material.SKULL_ITEM) {
+		if(item.hasItemMeta() && item.getItemMeta().hasDisplayName() && item.getType() == Material.PLAYER_HEAD) {
 			String name = ChatColor.stripColor(item.getItemMeta().getDisplayName());
 			for(PetBase pet : PetsPlus.getInstance().getPetManager().getPets()) {
 				if(pet.getName().equals(name)) {
@@ -89,7 +84,7 @@ public class PetSelection extends Gui {
 	}
 	
 	private static ItemStack createSkull(String displayName, String ownerName, boolean available) {
-		ItemStack item = new ItemStack(Material.SKULL_ITEM, 1, (byte) 3);
+		ItemStack item = new ItemStack(Material.PLAYER_HEAD);
 		SkullMeta meta = (SkullMeta) item.getItemMeta();
 		meta.setOwner(ownerName);
 		if(available)

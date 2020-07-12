@@ -2,14 +2,14 @@ package nl.mistermel.petsplus;
 
 import org.bukkit.Location;
 import org.bukkit.Sound;
-import org.bukkit.craftbukkit.v1_12_R1.entity.CraftLivingEntity;
+import org.bukkit.craftbukkit.v1_16_R1.entity.CraftLivingEntity;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 import net.md_5.bungee.api.ChatColor;
-import net.minecraft.server.v1_12_R1.EntityInsentient;
+import net.minecraft.server.v1_16_R1.EntityInsentient;
 
 
 @SuppressWarnings("deprecation")

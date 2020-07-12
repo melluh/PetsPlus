@@ -34,10 +34,10 @@ public class PetsPlus extends JavaPlugin {
 		instance = this;
 		
 		String ver = Bukkit.getVersion();
-		if(!ver.contains("1.12")) {
+		if(!ver.contains("1.16")) {
 			getServer().getLogger().log(Level.SEVERE, "!!!!!!!!!!!!!!!");
 			getServer().getLogger().log(Level.SEVERE, "-=-IMPORTANT-=-");
-			getServer().getLogger().log(Level.SEVERE, "Expected version: 1.12.x");
+			getServer().getLogger().log(Level.SEVERE, "Expected version: 1.16.x");
 			getServer().getLogger().log(Level.SEVERE, "Actual version: " + ver);
 			getServer().getLogger().log(Level.SEVERE, "-=-IMPORTANT-=-");
 			getServer().getLogger().log(Level.SEVERE, "!!!!!!!!!!!!!!!");
