@@ -10,7 +10,6 @@ import net.md_5.bungee.api.ChatColor;
 import nl.mistermel.petsplus.Pet;
 import nl.mistermel.petsplus.PetBase;
 import nl.mistermel.petsplus.PetsPlus;
-import nl.mistermel.petsplus.util.ItemBuilder;
 
 public class PetSelection extends Gui {
 	
@@ -20,12 +19,11 @@ public class PetSelection extends Gui {
 
 	@Override
 	public void populateInventory(Player p, Inventory inv) {
+		int index = 10;
 		for(PetBase pet : PetsPlus.getInstance().getPetManager().getPets()) {
-			inv.addItem(createSkull(pet.getName(), pet.getSkullOwner(), p.hasPermission(pet.getPermission())));
+			inv.setItem(index, createSkull(pet.getName(), pet.getSkullOwner(), p.hasPermission(pet.getPermission())));
+			index++;
 		}
-		
-		inv.setItem(21, new ItemBuilder(Material.BEACON).setName(PetsPlus.guiSetting("pet-options-item")).get());
-		inv.setItem(23, new ItemBuilder(Material.BARRIER).setName(PetsPlus.guiSetting("remove-pet-item")).get());
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -42,46 +40,25 @@ public class PetSelection extends Gui {
 
 	@Override
 	public void onClick(Player p, ItemStack item) {
-		if(item.getType() == Material.BARRIER) {
-			if(!PetsPlus.getInstance().hasPet(p)) {
-				p.sendMessage(PetsPlus.getInstance().getConfigManager().getPrefix() + PetsPlus.getInstance().getConfigManager().getMessage("dont-have-pet"));
-				p.closeInventory();
-				return;
-			}
-			p.sendMessage(PetsPlus.getInstance().getConfigManager().getPrefix() + PetsPlus.getInstance().getConfigManager().getMessage("removed-pet").replaceAll("%pet-name%", PetsPlus.getInstance().getPet(p).getEntity().getType().getName()));
-			p.closeInventory();
-			PetsPlus.getInstance().removePet(p);
-		}
-		if(item.getType() == Material.BEACON) {
-			if(!PetsPlus.getInstance().hasPet(p)) {
-				p.sendMessage(PetsPlus.getInstance().getConfigManager().getPrefix() + PetsPlus.getInstance().getConfigManager().getMessage("dont-have-pet"));
-				p.closeInventory();
-				return;
-			}
-			p.closeInventory();
-			PetsPlus.getInstance().getGuiManager().getGui(PetOptions.class).open(p);
-		}
 		if(item.hasItemMeta() && item.getItemMeta().hasDisplayName() && item.getType() == Material.PLAYER_HEAD) {
 			String name = ChatColor.stripColor(item.getItemMeta().getDisplayName());
-			for(PetBase pet : PetsPlus.getInstance().getPetManager().getPets()) {
-				if(pet.getName().equals(name)) {
-					if(PetsPlus.getInstance().hasPetActive(p, pet.getType())) {
-						p.sendMessage(PetsPlus.getInstance().getConfigManager().getPrefix() + PetsPlus.getInstance().getConfigManager().getMessage("already-have-this-pet").replaceAll("%pet-name%", pet.getType().getName().toLowerCase()));
-						p.closeInventory();
-						return;
-					}
-					if(PetsPlus.getInstance().hasPet(p)) {
-						p.sendMessage(PetsPlus.getInstance().getConfigManager().getPrefix() + PetsPlus.getInstance().getConfigManager().getMessage("already-have-pet"));
-						p.closeInventory();
-						return;
-					}
-					if(!p.hasPermission(pet.getPermission())) {
+			for(PetBase petBase : PetsPlus.getInstance().getPetManager().getPets()) {
+				if(petBase.getName().equals(name)) {
+					if(!p.hasPermission(petBase.getPermission())) {
 						p.sendMessage(PetsPlus.getInstance().getConfigManager().getPrefix() + PetsPlus.getInstance().getConfigManager().getMessage("no-permission"));
 						p.closeInventory();
 						return;
 					}
-					PetsPlus.getInstance().registerPet(p, new Pet(p, pet.getType(), pet.getSound()));
-					p.sendMessage(PetsPlus.getInstance().getConfigManager().getPrefix() + PetsPlus.getInstance().getConfigManager().getMessage("spawned-pet").replaceAll("%pet-name%", pet.getType().getName().toLowerCase()));
+					
+					if(PetsPlus.getInstance().getPetManager().getPet(p.getUniqueId()) != null) {
+						return;
+					}
+					
+					PetsPlus.getInstance().getPetManager().registerPet(new Pet(p, petBase.getType(), petBase.getSound()));
+					
+					@SuppressWarnings("deprecation")
+					String entityName = petBase.getType().getName().toLowerCase();
+					p.sendMessage(PetsPlus.message("spawned-pet").replaceAll("%pet-name%", entityName));
 					p.closeInventory();
 				}
 			}

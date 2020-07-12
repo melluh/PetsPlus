@@ -1,12 +1,15 @@
 package nl.mistermel.petsplus.gui;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import nl.mistermel.petsplus.Pet;
 import nl.mistermel.petsplus.PetsPlus;
 import nl.mistermel.petsplus.util.ItemBuilder;
 
@@ -27,20 +30,31 @@ public class PetOptions extends Gui {
 	public void onClick(Player p, ItemStack item) {
 		if(item.getType() == Material.JUKEBOX) {
 			p.closeInventory();
+			
+			Pet pet = PetsPlus.getInstance().getPetManager().getPet(p.getUniqueId());
+			
+			Location loc = pet.getEntity().getLocation();
+			Sound sound = pet.getSound();
 			for(Player p2 : Bukkit.getOnlinePlayers()) {
-				p2.playSound(PetsPlus.getInstance().getPet(p).getEntity().getLocation(), PetsPlus.getInstance().getPet(p).getSound(), SoundCategory.AMBIENT, 1f, 1f);
+				p2.playSound(loc, sound, SoundCategory.AMBIENT, 1f, 1f);
 			}
 			return;
 		}
+		
 		if(item.getType() == Material.SADDLE) {
 			p.closeInventory();
-			PetsPlus.getInstance().getPet(p).getEntity().addPassenger(p);
+			PetsPlus.getInstance().getPetManager().getPet(p.getUniqueId()).getEntity().addPassenger(p);
 			return;
 		}
+		
 		if(item.getType() == Material.BARRIER) {
-			p.sendMessage(PetsPlus.getInstance().getConfigManager().getPrefix() + PetsPlus.getInstance().getConfigManager().getMessage("removed-pet").replaceAll("%pet-name%", PetsPlus.getInstance().getPet(p).getEntity().getType().getName()));
+			Pet pet = PetsPlus.getInstance().getPetManager().getPet(p.getUniqueId());
+			@SuppressWarnings("deprecation")
+			String entityName = pet.getEntity().getType().getName();
+			
+			p.sendMessage(PetsPlus.message("removed-pet").replaceAll("%pet-name%", entityName));
 			p.closeInventory();
-			PetsPlus.getInstance().removePet(p);
+			PetsPlus.getInstance().getPetManager().removePet(pet);
 			return;
 		}
 	}

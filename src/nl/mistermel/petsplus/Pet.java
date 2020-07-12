@@ -16,52 +16,51 @@ import net.minecraft.server.v1_16_R1.EntityInsentient;
 public class Pet {
 	
 	private Player owner;
-	private LivingEntity e;
-	private Sound s;
+	private LivingEntity entity;
+	private Sound sound;
 	
 	public Pet(Player owner, EntityType type, Sound sound) {
 		this.owner = owner;
-		this.s = sound;
-		this.e = (LivingEntity) owner.getWorld().spawnEntity(owner.getLocation(), type);
-		e.setSilent(PetsPlus.getInstance().getConfigManager().getSetting("silent"));
+		this.sound = sound;
+		this.entity = (LivingEntity) owner.getWorld().spawnEntity(owner.getLocation(), type);
+		entity.setSilent(PetsPlus.getInstance().getConfigManager().getSetting("silent"));
 		if(PetsPlus.getInstance().getConfigManager().getSetting("nametag")) {
-			e.setCustomName(ChatColor.GOLD + owner.getName() + "'s " + type.getName().toLowerCase());
-			e.setCustomNameVisible(true);
+			entity.setCustomName(ChatColor.GOLD + owner.getName() + "'s " + type.getName().toLowerCase());
+			entity.setCustomNameVisible(true);
 		}
 	}
 	
 	public void tick() {
-		if(this.e == null || this.owner == null || this.e.isDead()) {
+		if(entity == null || owner == null || entity.isDead()) {
 			return;
 		}
-		if(this.e.getHealth() < e.getMaxHealth()) {
-			this.e.setHealth(e.getMaxHealth());
+		if(entity.getHealth() < entity.getMaxHealth()) {
+			entity.setHealth(entity.getMaxHealth());
 		}
-		if(this.e instanceof Creature && ((Creature)this.e).getTarget() != null) {
-			((Creature)this.e).setTarget(null);
+		if(entity instanceof Creature && ((Creature) entity).getTarget() != null) {
+			((Creature) entity).setTarget(null);
 		}
-		double dist = this.e.getLocation().distanceSquared(this.owner.getLocation());
-		if(dist > 10.0D) {
-			if(dist > 510.0D && this.owner.isOnGround()) {
-				this.e.teleport(this.owner);
-			}
+		double dist = entity.getLocation().distanceSquared(this.owner.getLocation());
+		if(dist > 510.0D && owner.isOnGround()) {
+			entity.teleport(owner);
+		} else if(dist > 10.0D) {
 			walkTo(this.owner.getLocation().clone().add(1.0D, 0.0D, 0.0D), 1.3D);
 		}
 	}
 	
 	public void remove() {
-		this.e.remove();
+		entity.remove();
 		this.owner = null;
-		this.e = null;
+		this.entity = null;
 	}
 	
 	public void walkTo(Location targetLocation, double speed) {
-		EntityInsentient c = (EntityInsentient) ((CraftLivingEntity)this.e).getHandle();
+		EntityInsentient c = (EntityInsentient) ((CraftLivingEntity) entity).getHandle();
 		c.getNavigation().a(targetLocation.getX(), targetLocation.getY(), targetLocation.getZ(), speed);
 	}
 	
 	public LivingEntity getEntity() {
-		return e;
+		return entity;
 	}
 	
 	public Player getOwner() {
@@ -69,7 +68,7 @@ public class Pet {
 	}
 	
 	public Sound getSound() {
-		return s;
+		return sound;
 	}
 	
 }

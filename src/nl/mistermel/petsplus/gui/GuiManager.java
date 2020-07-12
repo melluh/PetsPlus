@@ -1,14 +1,10 @@
 package nl.mistermel.petsplus.gui;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.InventoryClickEvent;
-
-public class GuiManager implements Listener {
+public class GuiManager {
 	
 	private Map<Class<? extends Gui>, Gui> guis = new HashMap<Class<? extends Gui>, Gui>();
 	
@@ -20,15 +16,8 @@ public class GuiManager implements Listener {
 		return guis.get(clazz);
 	}
 	
-	@EventHandler
-	public void onInventoryClick(InventoryClickEvent e) {
-		if(e.getCurrentItem() == null) return;
-		for(Gui gui : guis.values()) {
-			if(gui.getTitle().equals(e.getView().getTitle())) {
-				gui.onClick((Player) e.getWhoClicked(), e.getCurrentItem());
-				return;
-			}
-		}
+	public Collection<Gui> getGuis() {
+		return guis.values();
 	}
 	
 }
