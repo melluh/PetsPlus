@@ -139,4 +139,8 @@ public class PetsPlus extends JavaPlugin {
 	public static PetsPlus getInstance() {
 		return instance;
 	}
+	
+	public static String guiSetting(String key) {
+		return instance.getConfigManager().getGuiSetting(key);
+	}
 }

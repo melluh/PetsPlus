@@ -4,13 +4,13 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
 import net.md_5.bungee.api.ChatColor;
 import nl.mistermel.petsplus.Pet;
 import nl.mistermel.petsplus.PetBase;
 import nl.mistermel.petsplus.PetsPlus;
+import nl.mistermel.petsplus.util.ItemBuilder;
 
 public class PetSelection extends Gui {
 	
@@ -24,16 +24,20 @@ public class PetSelection extends Gui {
 			inv.addItem(createSkull(pet.getName(), pet.getSkullOwner(), p.hasPermission(pet.getPermission())));
 		}
 		
-		ItemStack options = new ItemStack(Material.BEACON);
-		ItemMeta optionsMeta = options.getItemMeta();
-		optionsMeta.setDisplayName(PetsPlus.getInstance().getConfigManager().getGuiSetting("pet-options-item"));
-		options.setItemMeta(optionsMeta);
-		inv.setItem(21, options);
-		ItemStack remove = new ItemStack(Material.BARRIER);
-		ItemMeta removeMeta = remove.getItemMeta();
-		removeMeta.setDisplayName(PetsPlus.getInstance().getConfigManager().getGuiSetting("remove-pet-item"));
-		remove.setItemMeta(removeMeta);
-		inv.setItem(23, remove);
+		inv.setItem(21, new ItemBuilder(Material.BEACON).setName(PetsPlus.guiSetting("pet-options-item")).get());
+		inv.setItem(23, new ItemBuilder(Material.BARRIER).setName(PetsPlus.guiSetting("remove-pet-item")).get());
+	}
+	
+	@SuppressWarnings("deprecation")
+	private ItemStack createSkull(String displayName, String ownerName, boolean available) {
+		ItemStack item = new ItemStack(Material.PLAYER_HEAD);
+		
+		SkullMeta meta = (SkullMeta) item.getItemMeta();
+		meta.setOwner(ownerName);
+		meta.setDisplayName((available ? ChatColor.GREEN : ChatColor.RED) + displayName);
+		
+		item.setItemMeta(meta);
+		return item;
 	}
 
 	@Override
@@ -82,18 +86,6 @@ public class PetSelection extends Gui {
 				}
 			}
 		}
-	}
-	
-	private static ItemStack createSkull(String displayName, String ownerName, boolean available) {
-		ItemStack item = new ItemStack(Material.PLAYER_HEAD);
-		SkullMeta meta = (SkullMeta) item.getItemMeta();
-		meta.setOwner(ownerName);
-		if(available)
-			meta.setDisplayName(ChatColor.GREEN + displayName);
-		else
-			meta.setDisplayName(ChatColor.RED + displayName);
-		item.setItemMeta(meta);
-		return item;
 	}
 	
 }

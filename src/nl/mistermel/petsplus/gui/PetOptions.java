@@ -6,9 +6,9 @@ import org.bukkit.SoundCategory;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import nl.mistermel.petsplus.PetsPlus;
+import nl.mistermel.petsplus.util.ItemBuilder;
 
 public class PetOptions extends Gui {
 	
@@ -18,24 +18,9 @@ public class PetOptions extends Gui {
 
 	@Override
 	public void populateInventory(Player p, Inventory inv) {
-		ItemStack sound = new ItemStack(Material.JUKEBOX);
-		ItemMeta soundMeta = sound.getItemMeta();
-		soundMeta.setDisplayName(PetsPlus.getInstance().getConfigManager().getGuiSetting("make-sound-item"));
-		sound.setItemMeta(soundMeta);
-		
-		ItemStack ride = new ItemStack(Material.SADDLE);
-		ItemMeta rideMeta = ride.getItemMeta();
-		rideMeta.setDisplayName(PetsPlus.getInstance().getConfigManager().getGuiSetting("ride-item"));
-		ride.setItemMeta(rideMeta);
-		
-		ItemStack remove = new ItemStack(Material.BARRIER);
-		ItemMeta removeMeta = remove.getItemMeta();
-		removeMeta.setDisplayName(PetsPlus.getInstance().getConfigManager().getGuiSetting("remove-pet-item"));
-		remove.setItemMeta(removeMeta);
-		
-		inv.setItem(11, sound);
-		inv.setItem(13, ride);
-		inv.setItem(15, remove);
+		inv.setItem(11, new ItemBuilder(Material.JUKEBOX).setName(PetsPlus.guiSetting("make-sound-item")).get());
+		inv.setItem(13, new ItemBuilder(Material.SADDLE).setName(PetsPlus.guiSetting("ride-item")).get());
+		inv.setItem(15, new ItemBuilder(Material.BARRIER).setName(PetsPlus.guiSetting("remove-pet-item")).get());
 	}
 
 	@Override
