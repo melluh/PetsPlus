@@ -2,13 +2,12 @@ package tech.mistermel.petsplus.pet;
 
 import org.bukkit.Location;
 import org.bukkit.attribute.Attribute;
-import org.bukkit.craftbukkit.v1_16_R1.entity.CraftLivingEntity;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.Player;
 
 import net.md_5.bungee.api.ChatColor;
-import net.minecraft.server.v1_16_R1.EntityInsentient;
 import tech.mistermel.petsplus.PetsPlus;
+import tech.mistermel.petsplus.protocol.Reflection;
 
 public class Pet {
 	
@@ -53,8 +52,9 @@ public class Pet {
 	}
 	
 	private void walkTo(Location targetLocation, double speed) {
-		EntityInsentient c = (EntityInsentient) ((CraftLivingEntity) entity).getHandle();
-		c.getNavigation().a(targetLocation.getX(), targetLocation.getY(), targetLocation.getZ(), speed);
+		Object c = Reflection.getMethod("{obc}.entity.CraftLivingEntity", "getHandle").invoke(entity);
+		Object nav = Reflection.getMethod("{nms}.EntityInsentient", "getNavigation").invoke(c);
+		Reflection.getMethod("{nms}.NavigationAbstract", "a", double.class, double.class, double.class, double.class).invoke(nav, targetLocation.getX(), targetLocation.getY(), targetLocation.getZ(), speed);
 	}
 	
 	public void despawn() {
