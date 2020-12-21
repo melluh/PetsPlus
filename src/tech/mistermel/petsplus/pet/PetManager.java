@@ -1,8 +1,6 @@
 package tech.mistermel.petsplus.pet;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -11,10 +9,39 @@ import org.bukkit.entity.Player;
 
 public class PetManager {
 	
-	private List<PetBase> petBases = new ArrayList<>();
-	
 	private Map<UUID, Pet> pets = new HashMap<>();
 	private Map<Entity, Pet> petEntities = new HashMap<>();
+	
+	public void spawnPet(Player player, PetType type) {
+		Pet pet = new Pet(player, type);
+		pets.put(player.getUniqueId(), pet);
+		petEntities.put(pet.getEntity(), pet);
+	}
+	
+	public void despawnPet(Player player) {
+		Pet pet = this.getPet(player);
+		if(pet == null)
+			return;
+		
+		pet.despawn();
+		pets.remove(player.getUniqueId());
+		petEntities.remove(pet.getEntity());
+	}
+	
+	public Pet getPet(Player player) {
+		return pets.get(player.getUniqueId());
+	}
+	
+	public Pet getPet(Entity entity) {
+		return petEntities.get(entity);
+	}
+	
+	public void despawnAll() {
+		for(Pet pet : pets.values()) {
+			pet.despawn();
+		}
+		pets.clear();
+	}
 	
 	public void tick() {
 		for(Pet pet : pets.values()) {
@@ -22,42 +49,4 @@ public class PetManager {
 		}
 	}
 	
-	public void registerPetBase(PetBase pet) {
-		petBases.add(pet);
-	}
-	
-	public void registerPet(Pet pet) {
-		pets.put(pet.getOwner().getUniqueId(), pet);
-		petEntities.put(pet.getEntity(), pet);
-	}
-	
-	public void removePet(Player player) {
-		this.removePet(this.getPet(player.getUniqueId()));
-	}
-	
-	public void removePet(Pet pet) {
-		pets.remove(pet.getOwner().getUniqueId());
-		petEntities.remove(pet.getEntity());
-		pet.remove();
-	}
-	
-	public void removeAll() {
-		for(Pet pet : pets.values()) {
-			pet.remove();
-		}
-		pets.clear();
-		petEntities.clear();
-	}
-	
-	public Pet getPet(UUID owner) {
-		return pets.get(owner);
-	}
-	
-	public Pet getPet(Entity entity) {
-		return petEntities.get(entity);
-	}
-	
-	public List<PetBase> getPets() {
-		return petBases;
-	}
 }

@@ -1,75 +1,91 @@
 package tech.mistermel.petsplus.pet;
 
 import org.bukkit.Location;
-import org.bukkit.Sound;
-import org.bukkit.craftbukkit.v1_16_R1.entity.CraftLivingEntity;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.entity.Ageable;
 import org.bukkit.entity.Creature;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 import net.md_5.bungee.api.ChatColor;
-import net.minecraft.server.v1_16_R1.EntityInsentient;
 import tech.mistermel.petsplus.PetsPlus;
+import tech.mistermel.petsplus.protocol.Reflection;
 
-
-@SuppressWarnings("deprecation")
 public class Pet {
 	
 	private Player owner;
-	private LivingEntity entity;
-	private Sound sound;
+	private PetType type;
+	private Creature entity;
 	
-	public Pet(Player owner, EntityType type, Sound sound) {
+	protected Pet(Player owner, PetType type) {
 		this.owner = owner;
-		this.sound = sound;
-		this.entity = (LivingEntity) owner.getWorld().spawnEntity(owner.getLocation(), type);
+		this.type = type;
+		
+		this.entity = (Creature) owner.getWorld().spawnEntity(owner.getLocation(), type.getEntityType());
 		entity.setSilent(PetsPlus.getInstance().getConfigManager().getSetting("silent"));
+		
+		if(entity instanceof Ageable && type.isBaby()) {
+			((Ageable) entity).setBaby();
+		}
+		
 		if(PetsPlus.getInstance().getConfigManager().getSetting("nametag")) {
-			entity.setCustomName(ChatColor.GOLD + owner.getName() + "'s " + type.getName().toLowerCase());
+			entity.setCustomName(ChatColor.GOLD + owner.getName() + "'s " + type.getName());
 			entity.setCustomNameVisible(true);
 		}
 	}
 	
+	@SuppressWarnings("deprecation")
 	public void tick() {
 		if(entity == null || owner == null || entity.isDead()) {
 			return;
 		}
-		if(entity.getHealth() < entity.getMaxHealth()) {
-			entity.setHealth(entity.getMaxHealth());
+		
+		double maxHealth = entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue();
+		if(entity.getHealth() < maxHealth) {
+			entity.setHealth(maxHealth);
 		}
-		if(entity instanceof Creature && ((Creature) entity).getTarget() != null) {
-			((Creature) entity).setTarget(null);
+		
+		if(entity.getTarget() != null) {
+			entity.setTarget(null);
 		}
-		double dist = entity.getLocation().distanceSquared(this.owner.getLocation());
-		if(dist > 510.0D && owner.isOnGround()) {
-			entity.teleport(owner);
-		} else if(dist > 10.0D) {
-			walkTo(this.owner.getLocation().clone().add(1.0D, 0.0D, 0.0D), 1.3D);
+		
+		double distance = entity.getLocation().distanceSquared(this.owner.getLocation());
+		if(distance > 510.0 && owner.isOnGround()) {
+			entity.teleport(owner.getLocation().add(1, 0, 0));
+		} else if(distance > 10.0) {
+			walkTo(owner.getLocation().add(1, 0, 0), 1.3);
 		}
 	}
 	
-	public void remove() {
+	private void walkTo(Location targetLocation, double speed) {
+		Object c = Reflection.getMethod("{obc}.entity.CraftLivingEntity", "getHandle").invoke(entity);
+		Object nav = Reflection.getMethod("{nms}.EntityInsentient", "getNavigation").invoke(c);
+		Reflection.getMethod("{nms}.NavigationAbstract", "a", double.class, double.class, double.class, double.class).invoke(nav, targetLocation.getX(), targetLocation.getY(), targetLocation.getZ(), speed);
+	}
+	
+	public void despawn() {
 		entity.remove();
 		this.owner = null;
 		this.entity = null;
 	}
 	
-	public void walkTo(Location targetLocation, double speed) {
-		EntityInsentient c = (EntityInsentient) ((CraftLivingEntity) entity).getHandle();
-		c.getNavigation().a(targetLocation.getX(), targetLocation.getY(), targetLocation.getZ(), speed);
+	protected Creature getEntity() {
+		return entity;
 	}
 	
-	public LivingEntity getEntity() {
-		return entity;
+	public void addPassenger() {
+		entity.addPassenger(owner);
+	}
+	
+	public Location getLocation() {
+		return entity.getLocation();
 	}
 	
 	public Player getOwner() {
 		return owner;
 	}
 	
-	public Sound getSound() {
-		return sound;
+	public PetType getType() {
+		return type;
 	}
 	
 }
