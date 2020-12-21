@@ -45,7 +45,7 @@ public class PetSelection extends Gui {
 			for(PetType type : PetType.values()) {
 				if(type.getName().equals(name)) {
 					if(!player.hasPermission(type.getPermission())) {
-						player.sendMessage(PetsPlus.getInstance().getConfigManager().getPrefix() + PetsPlus.getInstance().getConfigManager().getMessage("no-permission"));
+						player.sendMessage(PetsPlus.getInstance().getConfigManager().getPrefix() + " " + PetsPlus.getInstance().getConfigManager().getMessage("no-permission"));
 						player.closeInventory();
 						return;
 					}
@@ -55,7 +55,7 @@ public class PetSelection extends Gui {
 					}
 					
 					PetsPlus.getInstance().getPetManager().spawnPet(player, type);
-					player.sendMessage(PetsPlus.message("spawn-pet").replaceAll("%pet-name%", type.getName()));
+					player.sendMessage(PetsPlus.message("spawned-pet").replace("%pet-name%", type.getName()));
 					player.closeInventory();
 				}
 			}

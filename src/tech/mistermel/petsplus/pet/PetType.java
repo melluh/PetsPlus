@@ -7,11 +7,11 @@ public enum PetType {
 
 	CHICKEN("Chicken", EntityType.CHICKEN, Sound.ENTITY_CHICKEN_AMBIENT, "MHF_Chicken"),
 	COW("Cow", EntityType.COW, Sound.ENTITY_COW_AMBIENT, "MHF_Cow"),
+	MUSHROOM("Mushroom", EntityType.MUSHROOM_COW, Sound.ENTITY_COW_AMBIENT, "MHF_MushroomCow"),
 	SHEEP("Sheep", EntityType.SHEEP, Sound.ENTITY_SHEEP_AMBIENT, "MHF_Sheep"),
 	RABBIT("Rabbit", EntityType.RABBIT, Sound.ENTITY_RABBIT_AMBIENT, "MHF_Rabbit"),
 	OCELOT("Ocelot", EntityType.OCELOT, Sound.ENTITY_OCELOT_AMBIENT, "MHF_Ocelot"),
-	PIG("Pig", EntityType.PIG, Sound.ENTITY_PIG_AMBIENT, "MHF_Pig"),
-	MUSHROOM("Mushroom", EntityType.MUSHROOM_COW, Sound.ENTITY_COW_AMBIENT, "MHF_Mushroom");
+	PIG("Pig", EntityType.PIG, Sound.ENTITY_PIG_AMBIENT, "MHF_Pig");
 	
 	private String name;
 	private EntityType type;
