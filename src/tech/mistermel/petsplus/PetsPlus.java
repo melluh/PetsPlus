@@ -3,6 +3,7 @@ package tech.mistermel.petsplus;
 import java.io.File;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -57,7 +58,7 @@ public class PetsPlus extends JavaPlugin {
 		Player player = (Player) sender;
 		
 		guiManager.getGui(petManager.getPet(player) != null ? PetOptions.class : PetSelection.class).open(player);
-		player.sendMessage(message("gui-opened"));
+		player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 5, 10);
 		
 		return true;
 	}
