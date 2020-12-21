@@ -14,14 +14,14 @@ public abstract class Gui {
 		this.title = title;
 	}
 	
-	public void open(Player p) {
+	public void open(Player player) {
 		Inventory inv = Bukkit.createInventory(null, InventoryType.CHEST, this.getTitle());
-		populateInventory(p, inv);
-		p.openInventory(inv);
+		populateInventory(player, inv);
+		player.openInventory(inv);
 	}
 	
-	public abstract void populateInventory(Player p, Inventory inv);
-	public abstract void onClick(Player p, ItemStack item);
+	public abstract void populateInventory(Player player, Inventory inv);
+	public abstract void onClick(Player player, ItemStack item);
 	
 	public String getTitle() {
 		return title;
