@@ -2,20 +2,21 @@ package tech.mistermel.petsplus.gui;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 public abstract class Gui {
 	
 	private String title;
+	private int size;
 	
-	public Gui(String title) {
+	public Gui(String title, int size) {
 		this.title = title;
+		this.size = size;
 	}
 	
 	public void open(Player player) {
-		Inventory inv = Bukkit.createInventory(null, InventoryType.CHEST, this.getTitle());
+		Inventory inv = Bukkit.createInventory(null, size, this.getTitle());
 		populateInventory(player, inv);
 		player.openInventory(inv);
 	}

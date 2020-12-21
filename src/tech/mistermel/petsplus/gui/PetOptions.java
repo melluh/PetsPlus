@@ -14,7 +14,7 @@ import tech.mistermel.petsplus.util.ItemBuilder;
 public class PetOptions extends Gui {
 	
 	public PetOptions() {
-		super(PetsPlus.getInstance().getConfigManager().getGuiSetting("title-options"));
+		super(PetsPlus.getInstance().getConfigManager().getGuiSetting("title-options"), 27);
 	}
 
 	@Override

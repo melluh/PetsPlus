@@ -13,7 +13,7 @@ import tech.mistermel.petsplus.pet.PetType;
 public class PetSelection extends Gui {
 	
 	public PetSelection() {
-		super(PetsPlus.getInstance().getConfigManager().getGuiSetting("title-main"));
+		super(PetsPlus.getInstance().getConfigManager().getGuiSetting("title-main"), 36);
 	}
 
 	@Override
@@ -21,7 +21,11 @@ public class PetSelection extends Gui {
 		int index = 10;
 		for(PetType type : PetType.values()) {
 			inv.setItem(index, createSkull(type.getName(), type.getSkullOwner(), p.hasPermission(type.getPermission())));
+			
 			index++;
+			
+			if(index == 17)
+				index += 2;
 		}
 	}
 	
