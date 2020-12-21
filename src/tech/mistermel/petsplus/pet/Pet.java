@@ -2,6 +2,7 @@ package tech.mistermel.petsplus.pet;
 
 import org.bukkit.Location;
 import org.bukkit.attribute.Attribute;
+import org.bukkit.entity.Ageable;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.Player;
 
@@ -21,6 +22,10 @@ public class Pet {
 		
 		this.entity = (Creature) owner.getWorld().spawnEntity(owner.getLocation(), type.getEntityType());
 		entity.setSilent(PetsPlus.getInstance().getConfigManager().getSetting("silent"));
+		
+		if(entity instanceof Ageable && type.isBaby()) {
+			((Ageable) entity).setBaby();
+		}
 		
 		if(PetsPlus.getInstance().getConfigManager().getSetting("nametag")) {
 			entity.setCustomName(ChatColor.GOLD + owner.getName() + "'s " + type.getName());
