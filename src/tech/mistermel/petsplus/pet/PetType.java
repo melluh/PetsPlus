@@ -18,30 +18,38 @@ import tech.mistermel.petsplus.PetsPlus;
 
 public enum PetType {
 
-	BEE(EntityType.BEE, Sound.ENTITY_BEE_LOOP),
-	IRON_GOLEM(EntityType.IRON_GOLEM, Sound.ENTITY_IRON_GOLEM_STEP),
-	CHICKEN(EntityType.CHICKEN, Sound.ENTITY_CHICKEN_AMBIENT),
-	COW(EntityType.COW, Sound.ENTITY_COW_AMBIENT),
-	MUSHROOM(EntityType.MUSHROOM_COW, Sound.ENTITY_COW_AMBIENT),
-	SHEEP(EntityType.SHEEP, Sound.ENTITY_SHEEP_AMBIENT),
-	RABBIT(EntityType.RABBIT, Sound.ENTITY_RABBIT_AMBIENT),
-	OCELOT(EntityType.OCELOT, Sound.ENTITY_OCELOT_AMBIENT),
-	PIG(EntityType.PIG, Sound.ENTITY_PIG_AMBIENT),
-	FOX(EntityType.FOX, Sound.ENTITY_FOX_AMBIENT),
-	CAT(EntityType.CAT, Sound.ENTITY_CAT_AMBIENT),
-	WOLF(EntityType.WOLF, Sound.ENTITY_WOLF_AMBIENT),
-	POLAR_BEAR(EntityType.POLAR_BEAR, Sound.ENTITY_POLAR_BEAR_WARNING);
+	BEE("BEE", Sound.ENTITY_BEE_LOOP),
+	IRON_GOLEM("IRON_GOLEM", Sound.ENTITY_IRON_GOLEM_STEP),
+	CHICKEN("CHICKEN", Sound.ENTITY_CHICKEN_AMBIENT),
+	COW("COW", Sound.ENTITY_COW_AMBIENT),
+	MUSHROOM("MUSHROOM_COW", Sound.ENTITY_COW_AMBIENT),
+	SHEEP("SHEEP", Sound.ENTITY_SHEEP_AMBIENT),
+	RABBIT("RABBIT", Sound.ENTITY_RABBIT_AMBIENT),
+	OCELOT("OCELOT", Sound.ENTITY_OCELOT_AMBIENT),
+	PIG("PIG", Sound.ENTITY_PIG_AMBIENT),
+	FOX("FOX", Sound.ENTITY_FOX_AMBIENT),
+	CAT("CAT", Sound.ENTITY_CAT_AMBIENT),
+	WOLF("WOLF", Sound.ENTITY_WOLF_AMBIENT),
+	POLAR_BEAR("POLAR_BEAR", Sound.ENTITY_POLAR_BEAR_WARNING);
 	
 	private EntityType type;
 	private Sound sound;
 	
-	private PetType(EntityType type, Sound sound) {
-		this.type = type;
+	private boolean isUnsupported = false;
+	
+	private PetType(String typeName, Sound sound) {
 		this.sound = sound;
+		
+		try {
+			this.type = EntityType.valueOf(typeName);
+		} catch(IllegalArgumentException e) {
+			this.isUnsupported = true;
+			PetsPlus.getInstance().getLogger().info("It looks like this version of Minecraft does not support " + typeName + ", disabling this pet type");
+		}
 	}
 	
 	public boolean isEnabled() {
-		return this.getConfigSection().getBoolean("enabled");
+		return !isUnsupported && this.getConfigSection().getBoolean("enabled");
 	}
 	
 	public String getName() {

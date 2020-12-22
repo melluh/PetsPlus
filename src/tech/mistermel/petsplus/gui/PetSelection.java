@@ -20,6 +20,9 @@ public class PetSelection extends Gui {
 	public void populateInventory(Player p, Inventory inv) {
 		int index = 10;
 		for(PetType type : PetType.values()) {
+			if(!type.isEnabled())
+				continue;
+			
 			if(index == 17)
 				index += 2;
 				
