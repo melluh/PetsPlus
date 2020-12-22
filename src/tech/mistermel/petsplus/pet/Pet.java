@@ -53,6 +53,10 @@ public class Pet {
 		return isBaby;
 	}
 	
+	public boolean hasBabyOption() {
+		return entity instanceof Breedable;
+	}
+	
 	@SuppressWarnings("deprecation")
 	public void tick() {
 		if(entity == null || owner == null || entity.isDead()) {

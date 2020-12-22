@@ -25,7 +25,7 @@ public class PetOptions extends Gui {
 		inv.setItem(12, new ItemBuilder(Material.SADDLE).setName(PetsPlus.guiSetting("ridePet")).get());
 		inv.setItem(16, new ItemBuilder(Material.BARRIER).setName(PetsPlus.guiSetting("removePet")).get());
 		
-		if(PetsPlus.getInstance().getConfigManager().getSetting("allowAgeChange")) {
+		if(PetsPlus.getInstance().getConfigManager().getSetting("allowAgeChange") && pet.hasBabyOption()) {
 			inv.setItem(14, new ItemBuilder(Material.WHEAT).setName(PetsPlus.guiSetting(pet.isBaby() ? "changeToAdult" : "changeToBaby")).get());
 		}
 	}
