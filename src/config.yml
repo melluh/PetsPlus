@@ -1,19 +1,101 @@
-prefix: '&6&lPetsPlus &7>>'
 messages:
-  only-player: '&cThis command can only be used by players!'
-  already-have-this-pet: '&cYou already have a %pet-name% pet active!'
-  already-have-pet: '&cYou already have a pet active!'
-  spawned-pet: '&6Spawned your %pet-name% pet!'
-  removed-pet: '&cDespawned your %pet-name% pet!'
-  no-permission: '&cYou don''t have permission to spawn this pet!'
+  # The prefix will be put in front of every message.
+  # Set it to be empty to disable it.
+  prefix: '&6&lPetsPlus &7>>'
+
+  playersOnly: '&cThis command can only be used by players!'
+  noPermission: '&cYou do not have permission to spawn this pet type!'
+
+  alreadyHavePet: '&cYou already have a pet active!'
+  spawnedPet: '&aSpawned your {} pet'
+  despawnedPet: '&aDespawned your {} pet'
+
 gui:
-  title-main: '&a&lPets'
-  title-options: '&a&lPets &7| Options'
-  title-rename: '&a&lPets &7| Rename'
-  remove-pet-item: '&cRemove pet'
-  pet-options-item: '&6Pet options'
-  make-sound-item: '&6Make sound'
-  ride-item: '&6Ride pet'
-options:
-  silent: true
-  nametag: true
+  titles:
+    main: '&a&lPets'
+    options: '&a&lPets &7| Options'
+
+  ridePet: '&6Ride pet'
+  makeSound: '&6Make sound'
+  removePet: '&cRemove pet'
+
+settings:
+  # If set to true, pets will not make sound on their own.
+  # They can still make sound if the 'Make sound' button is pressed.
+  isSilent: true
+
+  # If set to true, pets will have a nametag visible.
+  hasNametag: true
+
+# You can configure each pet type below.
+# Disabling a mob type will prevent it from showing up in-game entirely.
+petTypes:
+  chicken:
+    enabled: true
+    name: 'Chicken'
+  babyChicken:
+    enabled: true
+    name: 'Baby Chicken'
+  cow:
+    enabled: true
+    name: 'Cow'
+  babyCow:
+    enabled: true
+    name: 'Baby Cow'
+  mushroom:
+    enabled: true
+    name: 'Mushroom'
+  babyMushroom:
+    enabled: true
+    name: 'Baby Mushroom'
+  sheep:
+    enabled: true
+    name: 'Sheep'
+  babySheep:
+    enabled: true
+    name: 'Baby Sheep'
+  rabbit:
+    enabled: true
+    name: 'Rabbit'
+  babyRabbit:
+    enabled: true
+    name: 'Baby Rabbit'
+  ocelot:
+    enabled: true
+    name: 'Ocelot'
+  babyOcelot:
+    enabled: true
+    name: 'Baby Ocelot'
+  pig:
+    enabled: true
+    name: 'Pig'
+  babyPig:
+    enabled: true
+    name: 'Baby Pig'
+  fox:
+    enabled: true
+    name: 'Fox'
+  babyFox:
+    enabled: true
+    name: 'Baby Fox'
+  cat:
+    enabled: true
+    name: 'Cat'
+  babyCat:
+    enabled: true
+    name: 'Baby Cat'
+  wolf:
+    enabled: true
+    name: 'Wolf'
+  babyWolf:
+    enabled: true
+    name: 'Baby Wolf'
+  bee:
+    enabled: true
+    name: 'Bee'
+  polarBear:
+    enabled: true
+    name: 'Polar Bear'
+  babyPolarBear:
+    enabled: true
+    name: 'Baby Polar Bear'
