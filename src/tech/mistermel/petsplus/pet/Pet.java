@@ -16,23 +16,41 @@ public class Pet {
 	private PetType type;
 	private Creature entity;
 	
+	private boolean isBaby;
+	
 	protected Pet(Player owner, PetType type) {
 		this.owner = owner;
 		this.type = type;
 		
 		this.entity = (Creature) owner.getWorld().spawnEntity(owner.getLocation(), type.getEntityType());
-		entity.setSilent(PetsPlus.getInstance().getConfigManager().getSetting("silent"));
+		entity.setSilent(PetsPlus.getInstance().getConfigManager().getSetting("isSilent"));
 		
-		if(entity instanceof Breedable && type.isBaby()) {
+		if(entity instanceof Breedable && PetsPlus.getInstance().getConfigManager().getSetting("isBabyDefault")) {
 			Breedable breedable = (Breedable) entity;
 			breedable.setBaby();
 			breedable.setAgeLock(true);
 		}
 		
-		if(PetsPlus.getInstance().getConfigManager().getSetting("nametag")) {
+		if(PetsPlus.getInstance().getConfigManager().getSetting("hasNametag")) {
 			entity.setCustomName(ChatColor.GOLD + owner.getName() + "'s " + type.getName());
 			entity.setCustomNameVisible(true);
 		}
+	}
+	
+	public void setBaby(boolean isBaby) {
+		this.isBaby = isBaby;
+		
+		if(entity instanceof Breedable) {
+			Breedable breedable = (Breedable) entity;
+			breedable.setAgeLock(true);
+			
+			if(isBaby) breedable.setBaby();
+			else breedable.setAdult();
+		}
+	}
+	
+	public boolean isBaby() {
+		return isBaby;
 	}
 	
 	@SuppressWarnings("deprecation")
