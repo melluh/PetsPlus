@@ -1,6 +1,7 @@
 package tech.mistermel.petsplus.gui;
 
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -17,8 +18,11 @@ public class PetSelection extends Gui {
 
 	@Override
 	public void populateInventory(Player p, Inventory inv) {
-		int index = 0;
+		int index = 10;
 		for(PetType type : PetType.values()) {
+			if(index == 17)
+				index += 2;
+				
 			inv.setItem(index, type.createSkull(p.hasPermission(type.getPermission())));
 			index++;
 		}
@@ -42,7 +46,9 @@ public class PetSelection extends Gui {
 					}
 					
 					PetsPlus.getInstance().getPetManager().spawnPet(player, type);
+					
 					player.sendMessage(PetsPlus.messageArgs("spawnedPet", type.getName()));
+					player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 5, 10);
 					player.closeInventory();
 				}
 			}

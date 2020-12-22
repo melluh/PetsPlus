@@ -2,6 +2,7 @@ package tech.mistermel.petsplus.gui;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -61,9 +62,9 @@ public class PetOptions extends Gui {
 			Pet pet = PetsPlus.getInstance().getPetManager().getPet(player);
 			PetsPlus.getInstance().getPetManager().despawnPet(player);
 			
-			player.sendMessage(PetsPlus.messageArgs("removedPet", pet.getType().getName()));
+			player.sendMessage(PetsPlus.messageArgs("despawnedPet", pet.getType().getName()));
+			player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 5, 10);
 			player.closeInventory();
-			
 			return;
 		}
 	}
