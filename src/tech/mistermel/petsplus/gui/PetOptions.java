@@ -61,7 +61,7 @@ public class PetOptions extends Gui {
 			Pet pet = PetsPlus.getInstance().getPetManager().getPet(player);
 			PetsPlus.getInstance().getPetManager().despawnPet(player);
 			
-			player.sendMessage(PetsPlus.message("removed-pet").replaceAll("%pet-name%", pet.getType().getName()));
+			player.sendMessage(PetsPlus.messageArgs("removedPet", pet.getType().getName()));
 			player.closeInventory();
 			
 			return;

@@ -68,6 +68,9 @@ public class Pet {
 			entity.setTarget(null);
 		}
 		
+		if(entity.getPassengers().contains(owner))
+			return;
+		
 		double distance = entity.getLocation().distanceSquared(this.owner.getLocation());
 		if(distance > 510.0 && owner.isOnGround()) {
 			entity.teleport(owner.getLocation().add(1, 0, 0));

@@ -86,4 +86,11 @@ public class PetsPlus extends JavaPlugin {
 	public static String message(String key) {
 		return instance.getConfigManager().getMessage(key);
 	}
+	
+	public static String messageArgs(String key, Object... args) {
+		String msg = instance.getConfigManager().getMessage(key);
+		for(Object arg : args)
+			msg = msg.replaceFirst("\\{\\}", arg.toString());
+		return msg;
+	}
 }
