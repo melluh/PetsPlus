@@ -15,6 +15,7 @@ public class InventoryListener implements Listener {
 		if(e.getCurrentItem() == null) return;
 		for(Gui gui : PetsPlus.getInstance().getGuiManager().getGuis()) {
 			if(gui.getTitle().equals(e.getView().getTitle())) {
+				e.setCancelled(true);
 				gui.onClick((Player) e.getWhoClicked(), e.getCurrentItem());
 				return;
 			}

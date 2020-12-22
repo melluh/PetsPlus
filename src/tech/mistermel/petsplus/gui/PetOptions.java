@@ -2,6 +2,7 @@ package tech.mistermel.petsplus.gui;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -14,14 +15,20 @@ import tech.mistermel.petsplus.util.ItemBuilder;
 public class PetOptions extends Gui {
 	
 	public PetOptions() {
-		super(PetsPlus.getInstance().getConfigManager().getGuiSetting("title-options"), 27);
+		super(PetsPlus.getInstance().getConfigManager().getGuiSetting("titles.options"), 27);
 	}
 
 	@Override
-	public void populateInventory(Player p, Inventory inv) {
-		inv.setItem(11, new ItemBuilder(Material.JUKEBOX).setName(PetsPlus.guiSetting("make-sound-item")).get());
-		inv.setItem(13, new ItemBuilder(Material.SADDLE).setName(PetsPlus.guiSetting("ride-item")).get());
-		inv.setItem(15, new ItemBuilder(Material.BARRIER).setName(PetsPlus.guiSetting("remove-pet-item")).get());
+	public void populateInventory(Player player, Inventory inv) {
+		Pet pet = PetsPlus.getInstance().getPetManager().getPet(player);
+		
+		inv.setItem(10, new ItemBuilder(Material.JUKEBOX).setName(PetsPlus.guiSetting("makeSound")).get());
+		inv.setItem(12, new ItemBuilder(Material.SADDLE).setName(PetsPlus.guiSetting("ridePet")).get());
+		inv.setItem(16, new ItemBuilder(Material.BARRIER).setName(PetsPlus.guiSetting("removePet")).get());
+		
+		if(PetsPlus.getInstance().getConfigManager().getSetting("allowAgeChange") && pet.hasBabyOption()) {
+			inv.setItem(14, new ItemBuilder(Material.WHEAT).setName(PetsPlus.guiSetting(pet.isBaby() ? "changeToAdult" : "changeToBaby")).get());
+		}
 	}
 
 	@Override
@@ -43,13 +50,21 @@ public class PetOptions extends Gui {
 			return;
 		}
 		
+		if(item.getType() == Material.WHEAT) {
+			player.closeInventory();
+			
+			Pet pet = PetsPlus.getInstance().getPetManager().getPet(player);
+			pet.setBaby(!pet.isBaby());
+			return;
+		}
+		
 		if(item.getType() == Material.BARRIER) {
 			Pet pet = PetsPlus.getInstance().getPetManager().getPet(player);
 			PetsPlus.getInstance().getPetManager().despawnPet(player);
 			
-			player.sendMessage(PetsPlus.message("removed-pet").replaceAll("%pet-name%", pet.getType().getName()));
+			player.sendMessage(PetsPlus.messageArgs("despawnedPet", pet.getType().getName()));
+			player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 5, 10);
 			player.closeInventory();
-			
 			return;
 		}
 	}

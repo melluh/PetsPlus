@@ -1,42 +1,88 @@
 package tech.mistermel.petsplus.pet;
 
+import java.lang.reflect.Field;
+import java.util.UUID;
+
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.EntityType;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.SkullMeta;
+
+import com.mojang.authlib.GameProfile;
+import com.mojang.authlib.properties.Property;
+
+import tech.mistermel.petsplus.PetsPlus;
 
 public enum PetType {
 
-	CHICKEN("Chicken", EntityType.CHICKEN, Sound.ENTITY_CHICKEN_AMBIENT, "MHF_Chicken", false),
-	COW("Cow", EntityType.COW, Sound.ENTITY_COW_AMBIENT, "MHF_Cow", false),
-	MUSHROOM("Mushroom", EntityType.MUSHROOM_COW, Sound.ENTITY_COW_AMBIENT, "MHF_MushroomCow", false),
-	SHEEP("Sheep", EntityType.SHEEP, Sound.ENTITY_SHEEP_AMBIENT, "MHF_Sheep", false),
-	RABBIT("Rabbit", EntityType.RABBIT, Sound.ENTITY_RABBIT_AMBIENT, "MHF_Rabbit", false),
-	OCELOT("Ocelot", EntityType.OCELOT, Sound.ENTITY_OCELOT_AMBIENT, "MHF_Ocelot", false),
-	PIG("Pig", EntityType.PIG, Sound.ENTITY_PIG_AMBIENT, "MHF_Pig", false),
+	BEE("BEE", Sound.ENTITY_BEE_LOOP),
+	IRON_GOLEM("IRON_GOLEM", Sound.ENTITY_IRON_GOLEM_STEP),
+	CHICKEN("CHICKEN", Sound.ENTITY_CHICKEN_AMBIENT),
+	COW("COW", Sound.ENTITY_COW_AMBIENT),
+	MUSHROOM("MUSHROOM_COW", Sound.ENTITY_COW_AMBIENT),
+	SHEEP("SHEEP", Sound.ENTITY_SHEEP_AMBIENT),
+	RABBIT("RABBIT", Sound.ENTITY_RABBIT_AMBIENT),
+	OCELOT("OCELOT", Sound.ENTITY_OCELOT_AMBIENT),
+	PIG("PIG", Sound.ENTITY_PIG_AMBIENT),
+	FOX("FOX", Sound.ENTITY_FOX_AMBIENT),
+	CAT("CAT", Sound.ENTITY_CAT_AMBIENT),
+	WOLF("WOLF", Sound.ENTITY_WOLF_AMBIENT),
+	POLAR_BEAR("POLAR_BEAR", Sound.ENTITY_POLAR_BEAR_WARNING);
 	
-	BABY_CHICKEN("Baby Chicken", EntityType.CHICKEN, Sound.ENTITY_CHICKEN_AMBIENT, "MHF_Chicken", true),
-	BABY_COW("Baby Cow", EntityType.COW, Sound.ENTITY_COW_AMBIENT, "MHF_Cow", true),
-	BABY_MUSHROOM("Baby Mushroom", EntityType.MUSHROOM_COW, Sound.ENTITY_COW_AMBIENT, "MHF_MushroomCow", true),
-	BABY_SHEEP("Baby Sheep", EntityType.SHEEP, Sound.ENTITY_SHEEP_AMBIENT, "MHF_Sheep", true),
-	BABY_RABBIT("Baby Rabbit", EntityType.RABBIT, Sound.ENTITY_RABBIT_AMBIENT, "MHF_Rabbit", true),
-	BABY_OCELOT("Baby Ocelot", EntityType.OCELOT, Sound.ENTITY_OCELOT_AMBIENT, "MHF_Ocelot", true),
-	BABY_PIG("Baby Pig", EntityType.PIG, Sound.ENTITY_PIG_AMBIENT, "MHF_Pig", true);
-	
-	private String name;
 	private EntityType type;
 	private Sound sound;
-	private String skullOwner;
-	private boolean isBaby;
 	
-	private PetType(String name, EntityType type, Sound sound, String skullOwner, boolean isBaby) {
-		this.name = name;
-		this.type = type;
+	private boolean isUnsupported = false;
+	
+	private PetType(String typeName, Sound sound) {
 		this.sound = sound;
-		this.skullOwner = skullOwner;
-		this.isBaby = isBaby;
+		
+		try {
+			this.type = EntityType.valueOf(typeName);
+		} catch(IllegalArgumentException e) {
+			this.isUnsupported = true;
+			PetsPlus.getInstance().getLogger().info("It looks like this version of Minecraft does not support " + typeName + ", disabling this pet type");
+		}
+	}
+	
+	public boolean isEnabled() {
+		return !isUnsupported && this.getConfigSection().getBoolean("enabled");
 	}
 	
 	public String getName() {
-		return name;
+		return this.getConfigSection().getString("name");
+	}
+	
+	public ItemStack createSkull(boolean hasPermission) {
+		String skullTexture = this.getConfigSection().getString("skullTexture");
+		if(skullTexture == null)
+			return new ItemStack(Material.BARRIER);
+		
+		ItemStack item = new ItemStack(Material.PLAYER_HEAD);
+		SkullMeta meta = (SkullMeta) item.getItemMeta();
+		
+		GameProfile profile = new GameProfile(UUID.randomUUID(), null);
+		profile.getProperties().put("textures", new Property("textures", skullTexture, null));
+		
+		try {
+			Field profileField = meta.getClass().getDeclaredField("profile");
+			profileField.setAccessible(true);
+			profileField.set(meta, profile);
+		} catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException e) {
+			e.printStackTrace();
+		}
+		
+		meta.setDisplayName((hasPermission ? ChatColor.GREEN : ChatColor.RED) + this.getName());
+		
+		item.setItemMeta(meta);
+		return item;
+	}
+	
+	private ConfigurationSection getConfigSection() {
+		return PetsPlus.getInstance().getConfig().getConfigurationSection("petTypes." + this.name().toLowerCase());
 	}
 	
 	public String getPermission() {
@@ -49,14 +95,6 @@ public enum PetType {
 	
 	public Sound getSound() {
 		return sound;
-	}
-	
-	public String getSkullOwner() {
-		return skullOwner;
-	}
-	
-	public boolean isBaby() {
-		return isBaby;
 	}
 	
 }

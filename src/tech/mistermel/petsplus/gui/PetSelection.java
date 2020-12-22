@@ -1,10 +1,10 @@
 package tech.mistermel.petsplus.gui;
 
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.SkullMeta;
 
 import net.md_5.bungee.api.ChatColor;
 import tech.mistermel.petsplus.PetsPlus;
@@ -13,32 +13,22 @@ import tech.mistermel.petsplus.pet.PetType;
 public class PetSelection extends Gui {
 	
 	public PetSelection() {
-		super(PetsPlus.getInstance().getConfigManager().getGuiSetting("title-main"), 36);
+		super(PetsPlus.getInstance().getConfigManager().getGuiSetting("titles.main"), 36);
 	}
 
 	@Override
 	public void populateInventory(Player p, Inventory inv) {
 		int index = 10;
 		for(PetType type : PetType.values()) {
-			inv.setItem(index, createSkull(type.getName(), type.getSkullOwner(), p.hasPermission(type.getPermission())));
-			
-			index++;
+			if(!type.isEnabled())
+				continue;
 			
 			if(index == 17)
 				index += 2;
+				
+			inv.setItem(index, type.createSkull(p.hasPermission(type.getPermission())));
+			index++;
 		}
-	}
-	
-	@SuppressWarnings("deprecation")
-	private ItemStack createSkull(String displayName, String ownerName, boolean available) {
-		ItemStack item = new ItemStack(Material.PLAYER_HEAD);
-		
-		SkullMeta meta = (SkullMeta) item.getItemMeta();
-		meta.setOwner(ownerName);
-		meta.setDisplayName((available ? ChatColor.GREEN : ChatColor.RED) + displayName);
-		
-		item.setItemMeta(meta);
-		return item;
 	}
 
 	@Override
@@ -49,7 +39,7 @@ public class PetSelection extends Gui {
 			for(PetType type : PetType.values()) {
 				if(type.getName().equals(name)) {
 					if(!player.hasPermission(type.getPermission())) {
-						player.sendMessage(PetsPlus.getInstance().getConfigManager().getPrefix() + " " + PetsPlus.getInstance().getConfigManager().getMessage("no-permission"));
+						player.sendMessage(PetsPlus.getInstance().getConfigManager().getMessage("noPermission"));
 						player.closeInventory();
 						return;
 					}
@@ -59,7 +49,9 @@ public class PetSelection extends Gui {
 					}
 					
 					PetsPlus.getInstance().getPetManager().spawnPet(player, type);
-					player.sendMessage(PetsPlus.message("spawned-pet").replace("%pet-name%", type.getName()));
+					
+					player.sendMessage(PetsPlus.messageArgs("spawnedPet", type.getName()));
+					player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 5, 10);
 					player.closeInventory();
 				}
 			}

@@ -52,7 +52,7 @@ public class PetsPlus extends JavaPlugin {
 
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		if(!(sender instanceof Player)) {
-			sender.sendMessage(configManager.getPrefix() + configManager.getMessage("player-only"));
+			sender.sendMessage(configManager.getMessage("player-only"));
 			return true;
 		}
 		Player player = (Player) sender;
@@ -84,6 +84,13 @@ public class PetsPlus extends JavaPlugin {
 	}
 	
 	public static String message(String key) {
-		return instance.getConfigManager().getPrefix() + " " + instance.getConfigManager().getMessage(key);
+		return instance.getConfigManager().getMessage(key);
+	}
+	
+	public static String messageArgs(String key, Object... args) {
+		String msg = instance.getConfigManager().getMessage(key);
+		for(Object arg : args)
+			msg = msg.replaceFirst("\\{\\}", arg.toString());
+		return msg;
 	}
 }

@@ -2,7 +2,7 @@ package tech.mistermel.petsplus.pet;
 
 import org.bukkit.Location;
 import org.bukkit.attribute.Attribute;
-import org.bukkit.entity.Ageable;
+import org.bukkit.entity.Breedable;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.Player;
 
@@ -16,21 +16,45 @@ public class Pet {
 	private PetType type;
 	private Creature entity;
 	
+	private boolean isBaby;
+	
 	protected Pet(Player owner, PetType type) {
 		this.owner = owner;
 		this.type = type;
 		
 		this.entity = (Creature) owner.getWorld().spawnEntity(owner.getLocation(), type.getEntityType());
-		entity.setSilent(PetsPlus.getInstance().getConfigManager().getSetting("silent"));
+		entity.setSilent(PetsPlus.getInstance().getConfigManager().getSetting("isSilent"));
 		
-		if(entity instanceof Ageable && type.isBaby()) {
-			((Ageable) entity).setBaby();
+		if(entity instanceof Breedable && PetsPlus.getInstance().getConfigManager().getSetting("isBabyDefault")) {
+			Breedable breedable = (Breedable) entity;
+			breedable.setBaby();
+			breedable.setAgeLock(true);
 		}
 		
-		if(PetsPlus.getInstance().getConfigManager().getSetting("nametag")) {
+		if(PetsPlus.getInstance().getConfigManager().getSetting("hasNametag")) {
 			entity.setCustomName(ChatColor.GOLD + owner.getName() + "'s " + type.getName());
 			entity.setCustomNameVisible(true);
 		}
+	}
+	
+	public void setBaby(boolean isBaby) {
+		this.isBaby = isBaby;
+		
+		if(entity instanceof Breedable) {
+			Breedable breedable = (Breedable) entity;
+			breedable.setAgeLock(true);
+			
+			if(isBaby) breedable.setBaby();
+			else breedable.setAdult();
+		}
+	}
+	
+	public boolean isBaby() {
+		return isBaby;
+	}
+	
+	public boolean hasBabyOption() {
+		return entity instanceof Breedable;
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -47,6 +71,9 @@ public class Pet {
 		if(entity.getTarget() != null) {
 			entity.setTarget(null);
 		}
+		
+		if(entity.getPassengers().contains(owner))
+			return;
 		
 		double distance = entity.getLocation().distanceSquared(this.owner.getLocation());
 		if(distance > 510.0 && owner.isOnGround()) {
