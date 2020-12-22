@@ -1,7 +1,7 @@
 name: PetsPlus
 main: tech.mistermel.petsplus.PetsPlus
 author: MisterMel
-version: 1.4.0
+version: 1.5.0
 description: Interactive pets for your players
 api-version: 1.13
 commands:
