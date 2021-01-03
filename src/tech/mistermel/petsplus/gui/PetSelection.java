@@ -1,12 +1,12 @@
 package tech.mistermel.petsplus.gui;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import net.md_5.bungee.api.ChatColor;
 import tech.mistermel.petsplus.PetsPlus;
 import tech.mistermel.petsplus.pet.PetType;
 
