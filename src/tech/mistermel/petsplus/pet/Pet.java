@@ -1,12 +1,13 @@
 package tech.mistermel.petsplus.pet;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.attribute.Attribute;
+import org.bukkit.entity.Ageable;
 import org.bukkit.entity.Breedable;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.Player;
 
-import net.md_5.bungee.api.ChatColor;
 import tech.mistermel.petsplus.PetsPlus;
 import tech.mistermel.petsplus.protocol.Reflection;
 
@@ -18,6 +19,7 @@ public class Pet {
 	
 	private boolean isBaby;
 	
+	@SuppressWarnings("deprecation")
 	protected Pet(Player owner, PetType type) {
 		this.owner = owner;
 		this.type = type;
@@ -25,10 +27,10 @@ public class Pet {
 		this.entity = (Creature) owner.getWorld().spawnEntity(owner.getLocation(), type.getEntityType());
 		entity.setSilent(PetsPlus.getInstance().getConfigManager().getSetting("isSilent"));
 		
-		if(entity instanceof Breedable && PetsPlus.getInstance().getConfigManager().getSetting("isBabyDefault")) {
-			Breedable breedable = (Breedable) entity;
-			breedable.setBaby();
-			breedable.setAgeLock(true);
+		if(entity instanceof Ageable && PetsPlus.getInstance().getConfigManager().getSetting("isBabyDefault")) {
+			Ageable ageable = (Ageable) entity;
+			ageable.setBaby();
+			ageable.setAgeLock(true);
 		}
 		
 		if(PetsPlus.getInstance().getConfigManager().getSetting("hasNametag")) {
@@ -37,15 +39,16 @@ public class Pet {
 		}
 	}
 	
+	@SuppressWarnings("deprecation")
 	public void setBaby(boolean isBaby) {
 		this.isBaby = isBaby;
 		
-		if(entity instanceof Breedable) {
-			Breedable breedable = (Breedable) entity;
-			breedable.setAgeLock(true);
+		if(entity instanceof Ageable) {
+			Ageable ageable = (Ageable) entity;
+			ageable.setAgeLock(true);
 			
-			if(isBaby) breedable.setBaby();
-			else breedable.setAdult();
+			if(isBaby) ageable.setBaby();
+			else ageable.setAdult();
 		}
 	}
 	
