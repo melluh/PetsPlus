@@ -4,7 +4,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Ageable;
-import org.bukkit.entity.Breedable;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.Player;
 
@@ -57,7 +56,7 @@ public class Pet {
 	}
 	
 	public boolean hasBabyOption() {
-		return entity instanceof Breedable;
+		return entity instanceof Ageable;
 	}
 	
 	@SuppressWarnings("deprecation")
