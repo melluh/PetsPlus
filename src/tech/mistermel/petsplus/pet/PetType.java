@@ -31,6 +31,7 @@ public enum PetType {
 	CAT("CAT", Sound.ENTITY_CAT_AMBIENT),
 	WOLF("WOLF", Sound.ENTITY_WOLF_AMBIENT),
 	POLAR_BEAR("POLAR_BEAR", Sound.ENTITY_POLAR_BEAR_WARNING);
+	ENDER_DRAGON("ENDER_DRAGON", Sound.ENTITY_ENDER_DRAGON_GROWL)
 	
 	private EntityType type;
 	private Sound sound;
